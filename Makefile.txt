@@ -1,0 +1,18 @@
+# Tên của tweak
+TWEAK_NAME = Vcamcobay
+# Các framework bắt buộc phải liên kết
+MYCAMIOS_FRAMEWORKS = AVFoundation UIKit CoreMedia Security Foundation
+
+# Đảm bảo build với flag Position Independent Code (PIC)
+# Điều này cực kỳ quan trọng cho Dopamine Rootless vì nó hoạt động như một library động
+CFLAGS += -fPIC -fobjc-arc
+
+# Đường dẫn đến source code chính
+MYCAMIOS_SOURCES = Tweak.x
+
+# Bao gồm các quy tắc mặc định của Theos
+include $(THEOS)/makefiles/common.mk
+
+# Tự động khởi động lại SpringBoard sau khi cài đặt để áp dụng tweak
+after-install::
+    install.exec "killall -9 SpringBoard" 
