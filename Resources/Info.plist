@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>caption</key>
+    <string>Vcamcobay Virtual Camera</string>
+    <key>entry</key>
+    <dict>
+        <key>label</key>
+        <string>Vcamcobay</string>
+        <key>icon</key>
+        <string>SettingsIcon.png</string>
+        <key>item</key>
+        <string>TICGroupSpec</string>
+        <key>detail</key>
+        <string>VcamcobayDetailController</string>
+        <key>bundles</key>
+        <array>
+            <string>com.vcamcobay.tweak</string>
+        </array>
+    </dict>
+    <key>preferences</key>
+    <array>
+        <!-- Nhóm 1: Chế độ hiển thị -->
+        <dict>
+            <key>cell</key>
+            <string>PSGroupSpecifierCell</string>
+            <key>footerText</key>
+            <string>Cài đặt chế độ Virtual Camera</string>
+        </dict>
+        
+        <dict>
+            <key>default</key>
+            <false/>
+            <key>defaults</key>
+            <string>com.vcamcobay.tweak</string>
+            <key>key</key>
+            <string>VCamEnabled</string>
+            <key>label</key>
+            <string>Bật Virtual Camera</string>
+            <key>cell</key>
+            <string>PSSwitchCell</string>
+            <key>cellClass</key>
+            <string>VcamcobaySwitchCell</string>
+        </dict>
+
+        <dict>
+            <key>default</key>
+            <true/>
+            <key>defaults</key>
+            <string>com.vcamcobay.tweak</string>
+            <key>key</key>
+            <string>ShowLogoOnly</string>
+            <key>label</key>
+            <string>Hiển thị Logo VCAM</string>
+            <key>cell</key>
+            <string>PSSwitchCell</string>
+        </dict>
+
+        <!-- Nhóm 2: Thông tin -->
+        <dict>
+            <key>cell</key>
+            <string>PSGroupSpecifierCell</string>
+            <key>footerText</key>
+            <string>Phiên bản 1.0.0 - Tác giả: hoanggiasg89-coder</string>
+        </dict>
+    </array>
+    
+    <key>requiresReboot</key>
+    <false/>
+    <key>requiresFinespring</key>
+    <false/>
+</dict>
+</plist>
