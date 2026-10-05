@@ -1,21 +1,4 @@
-#!/bin/sh
-
-# --- Post-Installation Script for Vcamcobay (Rootless Optimized) ---
-
-# 1. Dọn dẹp Cache kích hoạt
-# Xóa các file marker trạng thái để app có thể kiểm tra lại license từ đầu nếu cần
-rm -f /var/mobile/Library/Caches/com.destiny.mycamios.remote-active 2>/dev/null || true
-rm -f /var/mobile/Library/Caches/com.destiny.mycamios.gate.plist 2>/dev/null || true
-
-# 2. Cập nhật Icon SpringBoard
-# Ưu tiên uicache của Dopamine (/var/jb/usr/bin/uicache)
-if [ -x /var/jb/usr/bin/uicache ]; then
-    /var/jb/usr/bin/uicache
-elif [ -x /usr/bin/uicache ]; then
-    /usr/bin/uicache 2>/dev/null || true
-fi
-
-# 3. Thông báo thành công (tùy chọn)
-# echo "Vcamcobay installed successfully for Rootless environment."
-
+#!/bin/bash
+# Clean up temporary files if any
+rm -rf /tmp/Vcamcobay*
 exit 0

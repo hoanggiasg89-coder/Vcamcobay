@@ -1,0 +1,9 @@
+Package: com.vcamcobay.tweak
+Name: Vcamcobay
+Version: 1.0.0
+Description: Virtual Camera Tweak with Floating UI for iOS Rootless
+Maintainer: hoanggiasg89-coder
+Author: hoanggiasg89-coder
+Section: Multimedia
+Architecture: iphoneos-arm
+Depends: mobilesubstrate

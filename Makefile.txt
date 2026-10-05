@@ -1,18 +1,21 @@
-# Tên của tweak
+# Tên package
+TARGET = iphone:clang:latest:8.0
+INSTALL_TARGET_PROCESSES = SpringBoard
+
+# Tên module
+MODULES = ldid
+
+# Tên tweak chính
 TWEAK_NAME = Vcamcobay
-# Các framework bắt buộc phải liên kết
-MYCAMIOS_FRAMEWORKS = AVFoundation UIKit CoreMedia Security Foundation
 
-# Đảm bảo build với flag Position Independent Code (PIC)
-# Điều này cực kỳ quan trọng cho Dopamine Rootless vì nó hoạt động như một library động
-CFLAGS += -fPIC -fobjc-arc
+# Thêm các file nguồn
+Vcamcobay_FILES = Tweak.x
+Vcamcobay_FRAMEWORKS = AVFoundation UIKit CoreMedia ImageIO
 
-# Đường dẫn đến source code chính
-MYCAMIOS_SOURCES = Tweak.x
-
-# Bao gồm các quy tắc mặc định của Theos
+# Include Theos
 include $(THEOS)/makefiles/common.mk
+include $(THEOS_MAKE_PATH)/tweak.mk
 
-# Tự động khởi động lại SpringBoard sau khi cài đặt để áp dụng tweak
+# Rule để copy Resources vào đúng vị trí
 after-install::
-    install.exec "killall -9 SpringBoard" 
+	install.exec "killall SpringBoard"
