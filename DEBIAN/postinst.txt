@@ -1,4 +1,17 @@
-#!/bin/bash
-# Clean up temporary files if any
-rm -rf /tmp/Vcamcobay*
+#!/bin/sh
+
+# Kiểm tra xem có phải là môi trường Rootless (Dopamine) không
+if [ -d "/var/jb" ]; then
+    echo "[Vcamcobay] Detected Rootless environment."
+    # Trong môi trường Rootless, đôi khi chỉ cần kill process là đủ
+    killall SpringBoard 2>/dev/null || true
+else
+    echo "[Vcamcobay] Detected traditional jailbreak or standard iOS."
+    # Khởi động lại SpringBoard để áp dụng thay đổi sâu hơn
+    launchctl bootout system/com.apple.springboard 2>/dev/null || true
+    sleep 2
+    launchctl bootstrap system/com.apple.springboard 2>/dev/null || true
+fi
+
+echo "[Vcamcobay] Installation complete. Changes will take effect shortly."
 exit 0
