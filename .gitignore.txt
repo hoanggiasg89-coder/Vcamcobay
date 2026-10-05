@@ -1,11 +1,5 @@
-# Build artifacts
-obj/
-obj/*/*.o
-obj/*/*.d
-obj/*/*.ipa
-obj/*/*.deb
-
 # Xcode
+build/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -14,9 +8,19 @@ obj/*/*.deb
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-xcuserdata
-*.moved-aside
-*.xcworkspace
 
-# Theos specific
-theos/
+# Theos Build Artifacts
+obj
+packages
+*.deb
+*.ipk
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
