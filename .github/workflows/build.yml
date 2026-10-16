@@ -2,20 +2,20 @@
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Theos environment
+      - name: Install Theos and iOS SDK
         run: |
-          git clone --recursive https://github.com/theos/theos.git C:\Users\hoang/theos
-          echo "export THEOS=C:\Users\hoang/theos" >> 
-          sudo apt-get update
-          sudo apt-get install -y dpkg-dev
+          scripts/install-theos-environment.sh --skip-build-test
+          echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
 
-      - name: Build Tweak
-        run: |
-          make package
+      - name: Build and validate package
+        run: scripts/test-build.sh

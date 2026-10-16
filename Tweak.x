@@ -54,19 +54,21 @@ static BOOL g_isPanelOpen = NO;
     CVPixelBufferLockBaseAddress(buffer, 0);
     void *baseAddress = CVPixelBufferGetBaseAddress(buffer);
     
-    CGContextRef context = CGBitmapContextCreate(baseAddress, 
-                                                 (size_t)width, 
-                                                 (size_t)height, 
-                                                 8, 
-                                                 (size_t)(CVPixelBufferGetBytesPerRow(buffer)), 
-                                                 CGColorSpaceCreateDeviceRGB(), 
-                                                 kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = colorSpace ? CGBitmapContextCreate(baseAddress,
+                                                              (size_t)width,
+                                                              (size_t)height,
+                                                              8,
+                                                              (size_t)(CVPixelBufferGetBytesPerRow(buffer)),
+                                                              colorSpace,
+                                                              kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst) : NULL;
     
     if (context) {
         CGContextClearRect(context, CGRectMake(0, 0, width, height));
         CGContextDrawImage(context, CGRectMake(0, 0, width, height), logoImage.CGImage);
         CGContextRelease(context);
     }
+    if (colorSpace) CGColorSpaceRelease(colorSpace);
     
     CVPixelBufferUnlockBaseAddress(buffer, 0);
     
@@ -75,7 +77,11 @@ static BOOL g_isPanelOpen = NO;
     CMSampleBufferRef sampleBuffer = NULL;
     
     CMVideoFormatDescriptionRef videoInfo = NULL;
-    CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault, buffer, &videoInfo);
+    OSStatus formatStatus = CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault, buffer, &videoInfo);
+    if (formatStatus != noErr || !videoInfo) {
+        CVPixelBufferRelease(buffer);
+        return NULL;
+    }
     
     CMSampleTimingInfo timing = {CMTimeMake(1, 30), presentationTime, kCMTimeInvalid};
     
@@ -89,7 +95,11 @@ static BOOL g_isPanelOpen = NO;
                                                          &sampleBuffer);
                                                          
     CFRelease(videoInfo);
-    CFRelease(buffer);
+    CVPixelBufferRelease(buffer);
+    if (result != noErr || !sampleBuffer) {
+        if (sampleBuffer) CFRelease(sampleBuffer);
+        return NULL;
+    }
     
     return sampleBuffer;
 }
@@ -123,6 +133,7 @@ static BOOL g_isPanelOpen = NO;
 
 // ================= UI NỔI (FLOATING UI) =================
 @interface VCamFloatingController : UIViewController
+@property (nonatomic, strong) UIView *currentPanel;
 @end
 
 @implementation VCamFloatingController
@@ -237,8 +248,6 @@ static BOOL g_isPanelOpen = NO;
     [[NSUserDefaults standardUserDefaults] setBool:!current forKey:kShowLogoKey];
     NSLog(@"[Vcamcobay] Logo Mode changed to: %@", !current ? @"ON" : @"OFF");
 }
-
-@property (nonatomic, strong) UIView *currentPanel;
 
 @end
 

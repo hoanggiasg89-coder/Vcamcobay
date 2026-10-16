@@ -12,6 +12,7 @@ build/
 # Theos Build Artifacts
 obj
 packages
+.theos/
 *.deb
 *.ipk
 
