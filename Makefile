@@ -1,7 +1,7 @@
 # Tên package
-TARGET = iphone:clang:latest:8.0
+TARGET = iphone:clang:latest:15.0
 THEOS_PACKAGE_SCHEME = roothide
-INSTALL_TARGET_PROCESSES = SpringBoard
+INSTALL_TARGET_PROCESSES = VCNext
 
 # Tên module
 MODULES = ldid
@@ -16,7 +16,3 @@ Vcamcobay_FRAMEWORKS = AVFoundation UIKit CoreMedia ImageIO
 # Include Theos
 include $(THEOS)/makefiles/common.mk
 include $(THEOS_MAKE_PATH)/tweak.mk
-
-# Rule để copy Resources vào đúng vị trí
-after-install::
-	install.exec "killall SpringBoard"

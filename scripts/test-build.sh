@@ -32,6 +32,10 @@ git rev-parse --show-toplevel >/dev/null 2>&1 || fail "script must be inside the
 for file in Makefile Tweak.x control; do
   [[ -f "$file" ]] || fail "missing canonical project file: $file"
 done
+grep -Eq '^[[:space:]]*THEOS_PACKAGE_SCHEME[[:space:]]*=[[:space:]]*roothide[[:space:]]*$' Makefile || fail "Makefile must select THEOS_PACKAGE_SCHEME=roothide"
+grep -Eq '^[[:space:]]*TARGET[[:space:]]*=[[:space:]]*iphone:clang:latest:15\.0[[:space:]]*$' Makefile || fail "Makefile must target the supported iOS 15.0 minimum"
+grep -Eq '^Architecture:[[:space:]]*iphoneos-arm64e[[:space:]]*$' control || fail "control must declare the RootHide arm64e architecture"
+grep -Fq 'for RootHide' control || fail "control description must identify the RootHide package"
 command -v make >/dev/null || fail "make is not installed"
 command -v dpkg-deb >/dev/null || fail "dpkg-deb is not installed"
 
