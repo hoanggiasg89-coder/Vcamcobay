@@ -1,12 +1,12 @@
 # Vcamcobay Virtual Camera Tweak
 
-Một tweak iOS Rootless (hỗ trợ Dopamine) cho phép thay thế camera gốc bằng một luồng video ảo, đi kèm với giao diện điều khiển nổi (floating UI) có thể kéo thả.
+Một tweak iOS nhắm tới môi trường RootHide, đi kèm giao diện điều khiển nổi (floating UI) có thể kéo thả.
 
 ## Tính năng
 - **Virtual Stream:** Thay thế camera thật bằng logo hoặc video tùy chỉnh.
 - **Floating UI:** Nút tròn nhỏ gọn, có thể kéo thả khắp màn hình.
 - **Control Panel:** Nhấn vào nút tròn để mở bảng điều khiển bật/tắt chế độ Logo.
-- **Rootless Compatible:** Tối ưu cho môi trường không jailbreak truyền thống.
+- **RootHide Package:** Đóng gói bằng RootHide Theos scheme (`roothide`); không phải gói rootless thường.
 
 ## Cài đặt
 1. Clone repository này về máy.

@@ -36,14 +36,14 @@ command -v make >/dev/null || fail "make is not installed"
 command -v dpkg-deb >/dev/null || fail "dpkg-deb is not installed"
 
 if [[ -z "${THEOS:-}" ]]; then
-  for candidate in "$HOME/theos" /opt/theos; do
+  for candidate in "$HOME/theos-roothide"; do
     if [[ -d "$candidate/makefiles" ]]; then
       export THEOS="$candidate"
       break
     fi
   done
 fi
-[[ -n "${THEOS:-}" && -d "$THEOS/makefiles" ]] || fail "Theos is not installed or THEOS is unset; install Theos and export THEOS=/path/to/theos"
+[[ -n "${THEOS:-}" && -d "$THEOS/makefiles" ]] || fail "RootHide Theos is not installed or THEOS is unset; install RootHide Theos and export THEOS=/path/to/theos-roothide"
 
 if ! grep -Eq '^[[:space:]]*Vcamcobay_FILES[[:space:]]*=[[:space:]]*Tweak\.x[[:space:]]*$' Makefile; then
   fail "Makefile does not list the renamed Tweak.x as the tweak source"
@@ -74,10 +74,11 @@ for package in "${PACKAGES[@]}"; do
   dpkg-deb --info "$package" >/dev/null || fail "dpkg-deb rejected package metadata: $package"
   dpkg-deb --contents "$package" >/dev/null || fail "dpkg-deb rejected package contents: $package"
   architecture="$(dpkg-deb -f "$package" Architecture)"
-  [[ "$architecture" == "iphoneos-arm64" ]] || fail "expected a rootless iphoneos-arm64 package, got: $architecture"
+  [[ "$architecture" == "iphoneos-arm64e" ]] || fail "expected a RootHide iphoneos-arm64e package, got: $architecture"
   contents="$(dpkg-deb --contents "$package")"
-  grep -Fq 'var/jb/Library/MobileSubstrate/DynamicLibraries/Vcamcobay.dylib' <<<"$contents" || fail "rootless tweak dylib is missing from var/jb"
-  grep -Fq 'var/jb/Library/MobileSubstrate/DynamicLibraries/Vcamcobay.plist' <<<"$contents" || fail "rootless filter plist is missing from var/jb"
+  grep -Fq 'Library/MobileSubstrate/DynamicLibraries/Vcamcobay.dylib' <<<"$contents" || fail "RootHide tweak dylib is missing from the package"
+  grep -Fq 'Library/MobileSubstrate/DynamicLibraries/Vcamcobay.plist' <<<"$contents" || fail "RootHide filter plist is missing from the package"
+  if grep -Fq 'var/jb/' <<<"$contents"; then fail "RootHide package unexpectedly contains rootless /var/jb paths"; fi
   printf 'PACKAGE OK: %s (%s bytes)\n' "$(basename "$package")" "$(wc -c < "$package" | tr -d ' ')"
 done
 

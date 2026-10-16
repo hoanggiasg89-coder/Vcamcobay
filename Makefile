@@ -1,6 +1,6 @@
 # Tên package
 TARGET = iphone:clang:latest:8.0
-THEOS_PACKAGE_SCHEME = rootless
+THEOS_PACKAGE_SCHEME = roothide
 INSTALL_TARGET_PROCESSES = SpringBoard
 
 # Tên module

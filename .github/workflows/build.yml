@@ -12,10 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Theos and iOS SDK
+      - name: Install RootHide Theos and iOS SDK
         run: |
           scripts/install-theos-environment.sh --skip-build-test
-          echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
+          echo "THEOS=$HOME/theos-roothide" >> "$GITHUB_ENV"
 
       - name: Build and validate package
         run: scripts/test-build.sh
