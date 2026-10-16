@@ -73,6 +73,11 @@ PACKAGES=("$OUT_DIR"/*.deb)
 for package in "${PACKAGES[@]}"; do
   dpkg-deb --info "$package" >/dev/null || fail "dpkg-deb rejected package metadata: $package"
   dpkg-deb --contents "$package" >/dev/null || fail "dpkg-deb rejected package contents: $package"
+  architecture="$(dpkg-deb -f "$package" Architecture)"
+  [[ "$architecture" == "iphoneos-arm64" ]] || fail "expected a rootless iphoneos-arm64 package, got: $architecture"
+  contents="$(dpkg-deb --contents "$package")"
+  grep -Fq 'var/jb/Library/MobileSubstrate/DynamicLibraries/Vcamcobay.dylib' <<<"$contents" || fail "rootless tweak dylib is missing from var/jb"
+  grep -Fq 'var/jb/Library/MobileSubstrate/DynamicLibraries/Vcamcobay.plist' <<<"$contents" || fail "rootless filter plist is missing from var/jb"
   printf 'PACKAGE OK: %s (%s bytes)\n' "$(basename "$package")" "$(wc -c < "$package" | tr -d ' ')"
 done
 
